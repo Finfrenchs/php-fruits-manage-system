@@ -38,7 +38,7 @@ session_start();
 require_once __DIR__ . '/../app/Config/Database.php';
 
 // Load variabel environment dari file .env
-// __DIR__ . '/..' mengarah ke root project (satu level di atas folder public/)
+// __DIR__ . '/..' mengarah ke root project (satu level di atas folder api/)
 Database::loadEnv(__DIR__ . '/../.env');
 
 // ===========================================

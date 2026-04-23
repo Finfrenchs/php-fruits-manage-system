@@ -71,7 +71,7 @@ Ada dua cara untuk menjalankan aplikasi ini:
 **Cara 1: Menggunakan PHP Built-in Server (Rekomendasi)**
 Buka terminal di root folder project, lalu jalankan perintah berikut:
 ```bash
-php -S localhost:8000 -t public/
+php -S localhost:8000 -t api/
 ```
 Kemudian buka browser dan akses `http://localhost:8000`.
 *(Untuk menghentikan server, tekan `Ctrl + C` di terminal tersebut).*
@@ -80,7 +80,7 @@ Kemudian buka browser dan akses `http://localhost:8000`.
 Pastikan folder project berada di dalam `www` (Laragon) atau `htdocs` (XAMPP).
 Buka browser dan akses:
 ```
-http://localhost/fruits-management-system/public/
+http://localhost/fruits-management-system/api/
 ```
 Atau sesuaikan dengan konfigurasi virtual host Anda.
 

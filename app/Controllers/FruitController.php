@@ -7,10 +7,10 @@
  * FUNGSI:
  * Controller ini menghubungkan Model (Buah/Mangga) dengan View (tampilan).
  * Setiap metode publik di sini mewakili satu "aksi" yang bisa dipanggil
- * oleh Front Controller (public/index.php) berdasarkan parameter URL.
+ * oleh Front Controller (api/index.php) berdasarkan parameter URL.
  * 
  * ALUR MVC:
- * 1. User mengakses URL → public/index.php (Front Controller) menerima request
+ * 1. User mengakses URL → api/index.php (Front Controller) menerima request
  * 2. Front Controller menentukan aksi yang diminta (misal: ?action=index)
  * 3. Front Controller memanggil metode yang sesuai di FruitController
  * 4. FruitController berinteraksi dengan Model untuk mengambil/menyimpan data
