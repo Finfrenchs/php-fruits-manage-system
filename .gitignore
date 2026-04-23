@@ -1,0 +1,26 @@
+# ===========================================
+# Git Ignore - File yang tidak perlu di-push
+# ===========================================
+
+# Environment file (berisi kredensial sensitif)
+.env
+
+# Folder sistem operasi
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Log files
+*.log
+
+#file backup
+dashboard_backup.php
+layout_backup.php
+implementation_plan.md
+exam_answer.php
