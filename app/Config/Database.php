@@ -81,12 +81,21 @@ class Database
     {
         // Jika koneksi belum ada, buat koneksi baru (singleton pattern)
         if (self::$connection === null) {
-            // Ambil kredensial dari berbagai sumber environment
-            $host = $_ENV['DB_HOST'] ?? $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ?? '127.0.0.1';
-            $port = $_ENV['DB_PORT'] ?? $_SERVER['DB_PORT'] ?? getenv('DB_PORT') ?? '4000';
-            $name = $_ENV['DB_NAME'] ?? $_SERVER['DB_NAME'] ?? getenv('DB_NAME') ?? 'fruits_db';
-            $user = $_ENV['DB_USER'] ?? $_SERVER['DB_USER'] ?? getenv('DB_USER') ?? 'root';
-            $pass = $_ENV['DB_PASS'] ?? $_SERVER['DB_PASS'] ?? getenv('DB_PASS') ?? '';
+            // Ambil kredensial (Cek dengan prefix DB_ dan tanpa prefix agar fleksibel)
+            $host = $_ENV['DB_HOST'] ?? $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ?? 
+                    $_ENV['HOST'] ?? $_SERVER['HOST'] ?? getenv('HOST') ?? '127.0.0.1';
+            
+            $port = $_ENV['DB_PORT'] ?? $_SERVER['DB_PORT'] ?? getenv('DB_PORT') ?? 
+                    $_ENV['PORT'] ?? $_SERVER['PORT'] ?? getenv('PORT') ?? '4000';
+            
+            $name = $_ENV['DB_NAME'] ?? $_SERVER['DB_NAME'] ?? getenv('DB_NAME') ?? 
+                    $_ENV['DATABASE'] ?? $_SERVER['DATABASE'] ?? getenv('DATABASE') ?? 'fruits_db';
+            
+            $user = $_ENV['DB_USER'] ?? $_SERVER['DB_USER'] ?? getenv('DB_USER') ?? 
+                    $_ENV['USERNAME'] ?? $_SERVER['USERNAME'] ?? getenv('USERNAME') ?? 'root';
+            
+            $pass = $_ENV['DB_PASS'] ?? $_SERVER['DB_PASS'] ?? getenv('DB_PASS') ?? 
+                    $_ENV['PASSWORD'] ?? $_SERVER['PASSWORD'] ?? getenv('PASSWORD') ?? '';
 
             // DSN (Data Source Name) - Menambahkan port
             $dsn = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
