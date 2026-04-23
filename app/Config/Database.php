@@ -41,7 +41,9 @@ class Database
     {
         // Cek apakah file .env ada
         if (!file_exists($path)) {
-            die("ERROR: File .env tidak ditemukan di: $path. Silakan salin .env.example menjadi .env");
+            // Jika tidak ada (misal di Vercel/Production), abaikan saja
+            // karena variabel environment biasanya diset di dashboard hosting.
+            return;
         }
 
         // Baca file .env baris per baris
@@ -79,24 +81,24 @@ class Database
     {
         // Jika koneksi belum ada, buat koneksi baru (singleton pattern)
         if (self::$connection === null) {
-            // Ambil kredensial dari $_ENV yang sudah diload dari .env
-            $host = $_ENV['DB_HOST'] ?? '127.0.0.1';
-            $name = $_ENV['DB_NAME'] ?? 'fruits_db';
-            $user = $_ENV['DB_USER'] ?? 'root';
-            $pass = $_ENV['DB_PASS'] ?? '';
+            // Ambil kredensial dari berbagai sumber environment
+            $host = $_ENV['DB_HOST'] ?? $_SERVER['DB_HOST'] ?? getenv('DB_HOST') ?? '127.0.0.1';
+            $port = $_ENV['DB_PORT'] ?? $_SERVER['DB_PORT'] ?? getenv('DB_PORT') ?? '4000';
+            $name = $_ENV['DB_NAME'] ?? $_SERVER['DB_NAME'] ?? getenv('DB_NAME') ?? 'fruits_db';
+            $user = $_ENV['DB_USER'] ?? $_SERVER['DB_USER'] ?? getenv('DB_USER') ?? 'root';
+            $pass = $_ENV['DB_PASS'] ?? $_SERVER['DB_PASS'] ?? getenv('DB_PASS') ?? '';
 
-            // DSN (Data Source Name) untuk koneksi MySQL
-            $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
+            // DSN (Data Source Name) - Menambahkan port
+            $dsn = "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4";
 
             try {
-                // Buat koneksi PDO baru
+                // Buat koneksi PDO baru dengan dukungan SSL
                 self::$connection = new PDO($dsn, $user, $pass, [
-                    // Atur error mode agar PDO melempar exception saat error
                     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                    // Atur fetch mode default ke associative array
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    // Matikan emulasi prepared statement untuk keamanan
                     PDO::ATTR_EMULATE_PREPARES   => false,
+                    // Aktifkan SSL untuk koneksi Cloud
+                    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
                 ]);
             } catch (PDOException $e) {
                 // Tampilkan pesan error jika koneksi gagal
